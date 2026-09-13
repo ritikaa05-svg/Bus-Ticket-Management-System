@@ -1,0 +1,47 @@
+<!-- templates/admin_dashboard.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <h2>Admin Dashboard</h2>
+    
+    <!-- Admin Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>{{ stats.total_routes }}</h3>
+            <p>Total Routes</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ stats.today_bookings }}</h3>
+            <p>Today's Bookings</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ stats.pending_cancellations }}</h3>
+            <p>Pending Cancellations</p>
+        </div>
+    </div>
+    
+    <!-- Recent Bookings -->
+    <div class="recent-bookings">
+        <h3>Recent Bookings</h3>
+        {% for booking in recent_bookings %}
+        <div class="booking-card">
+            <p>{{ booking.origin }} → {{ booking.destination }}</p>
+            <small>{{ booking.date }} at {{ booking.departure_time }}</small>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Admin Quick Actions -->
+    <div class="quick-actions">
+        <a href="{{ url_for('admin_routes') }}" class="btn btn-primary">Manage Routes</a>
+        <a href="{{ url_for('admin_view_bookings') }}" class="btn btn-primary">View All Bookings</a>
+        <a href="{{ url_for('admin_cancellations') }}" class="btn btn-warning">
+            Review Cancellations 
+            {% if stats.pending_cancellations > 0 %}
+            <span class="badge">{{ stats.pending_cancellations }}</span>
+            {% endif %}
+        </a>
+    </div>
+</div>
+{% endblock %}
